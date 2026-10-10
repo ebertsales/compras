@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Compras">
+<meta name="theme-color" content="#f6f3ee">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Compras</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#22201c;--mut:#7a746a;--line:#e7e1d7;--acc:#b0413e;--acc2:#8f2f2d;--ok:#2f8f5b;--warn:#d39b16;--bad:#c0392b;--soft:#efe9df}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
+body{padding:env(safe-area-inset-top) 0 calc(96px + env(safe-area-inset-bottom))}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px}
+header h1{font-size:22px;margin:0;letter-spacing:-.3px}
+header small{display:block;color:var(--mut);font-size:13px;font-weight:400}
+.ico{border:0;background:var(--card);width:42px;height:42px;border-radius:50%;font-size:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);color:var(--ink)}
+.hero{background:var(--card);border-radius:20px;padding:16px 18px 18px;margin-top:10px;box-shadow:0 2px 10px rgba(60,40,20,.06)}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.nav button{border:0;background:var(--soft);width:34px;height:34px;border-radius:50%;font-size:18px;color:var(--ink)}
+.nav .t{text-align:center;font-weight:600}
+.nav .t small{display:block;font-weight:400;color:var(--mut);font-size:12px}
+.tot{font-size:38px;font-weight:700;letter-spacing:-1px;text-align:center;margin:8px 0 0}
+.de{text-align:center;color:var(--mut);font-size:14px}
+.bar{height:12px;border-radius:8px;background:var(--soft);margin:14px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:8px;transition:width .3s}
+.disp{display:flex;justify-content:space-between;font-size:14px}
+.datas{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--mut);display:flex;justify-content:space-between;align-items:center}
+.lnk{border:0;background:none;color:var(--acc);font-size:13px;padding:4px 0}
+.aviso{margin-top:12px;border-radius:14px;padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff6dd;border:1px solid #f0dc9a}
+.aviso.forte{background:#fdeaea;border-color:#efb7b2}
+.aviso button{flex:none}
+h2{font-size:15px;color:var(--mut);font-weight:600;margin:22px 4px 8px;display:flex;justify-content:space-between}
+.lista{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(60,40,20,.05)}
+.it{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.it:last-child{border-bottom:0}
+.it .d{width:38px;text-align:center;color:var(--mut);font-size:12px;line-height:1.1}
+.it .d b{display:block;font-size:17px;color:var(--ink)}
+.it .n{flex:1;min-width:0}
+.it .n div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it .n small{color:var(--mut);font-size:12px}
+.it .v{font-weight:600;white-space:nowrap}
+.pend{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-left:4px;vertical-align:middle}
+.vazio{padding:28px 16px;text-align:center;color:var(--mut);font-size:14px}
+.btn{border:0;border-radius:14px;padding:13px 18px;font-size:16px;font-weight:600;background:var(--acc);color:#fff}
+.btn.sec{background:var(--soft);color:var(--ink)}
+.btn.sm{padding:8px 12px;font-size:14px;border-radius:10px}
+.btn.full{width:100%}
+.btn:active{opacity:.8}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));width:calc(100% - 32px);max-width:488px;font-size:17px;padding:16px;border-radius:18px;box-shadow:0 6px 20px rgba(176,65,62,.35)}
+.enviar{margin:18px 0 0}
+/* folha */
+.vel{position:fixed;inset:0;background:rgba(20,15,10,.35);display:flex;align-items:flex-end;justify-content:center;z-index:10;animation:f .15s}
+.folha{background:var(--bg);width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:s .2s}
+@keyframes f{from{opacity:0}}@keyframes s{from{transform:translateY(40px)}}
+.alca{width:40px;height:5px;border-radius:3px;background:#d6cfc3;margin:0 auto 10px}
+.folha h3{margin:0 0 12px;font-size:19px;display:flex;justify-content:space-between;align-items:center}
+.campo{background:var(--card);border-radius:14px;padding:10px 14px;margin-bottom:10px}
+.campo label{display:block;font-size:12px;color:var(--mut);margin-bottom:2px}
+.campo input,.campo textarea{width:100%;border:0;outline:0;font:inherit;font-size:17px;background:none;color:var(--ink);padding:2px 0}
+.campo input[type=date]{min-height:28px;-webkit-appearance:none}
+.campo.valor input{font-size:30px;font-weight:700}
+.linha{display:flex;gap:10px}.linha .campo{flex:1}
+.parc{display:flex;align-items:center;justify-content:space-between}
+.step{display:flex;align-items:center;gap:6px}
+.step button{width:36px;height:36px;border-radius:50%;border:0;background:var(--soft);font-size:20px;color:var(--ink)}
+.step span{min-width:44px;text-align:center;font-weight:600}
+.dica{font-size:13px;color:var(--mut);margin:2px 4px 14px}
+.acoes{display:flex;gap:10px;margin-top:6px}.acoes .btn{flex:1}
+.del{background:none;color:var(--bad);border:0;font-size:15px;padding:14px;width:100%}
+.grupo{background:var(--card);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.grupo .campo{margin:0;border-radius:0;border-bottom:1px solid var(--line)}
+.grupo .campo:last-child{border-bottom:0}
+.sec-t{font-size:13px;color:var(--mut);margin:16px 4px 6px;text-transform:uppercase;letter-spacing:.4px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom));background:#2b2723;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:20;max-width:90%;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<button class="btn fab" onclick="abrirCompra()">+ Nova compra</button>
+<input type="file" id="arqRest" accept=".json,application/json" hidden onchange="restaurar(this)">
+<script>
+const KEY='compras_erika_v1',VERSAO='1.0';
+const PADRAO={cfg:{nome:'Erika',para:'Ebert',cartao:'Santander Mastercard',limite:1000,venc:27,diasAntes:7,fech:{}},itens:[],ultEnvio:null};
+let S=carregar(),ver=null;
+function carregar(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.cfg)return{...PADRAO,...s,cfg:{...PADRAO.cfg,...s.cfg}}}catch(e){}return JSON.parse(JSON.stringify(PADRAO))}
+function salvar(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){alert('Não foi possível salvar no celular.')}}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+
+/* utilidades */
+const $=id=>document.getElementById(id);
+const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const brl=v=>(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const hoje=()=>iso(new Date());
+const ym=s=>s.slice(0,7);
+function addM(m,k){let[y,mm]=m.split('-').map(Number);mm+=k;y+=Math.floor((mm-1)/12);mm=((mm-1)%12+12)%12+1;return y+'-'+pad(mm)}
+const ultDia=m=>new Date(+m.slice(0,4),+m.slice(5,7),0).getDate();
+const dm=s=>s.slice(8,10)+'/'+s.slice(5,7);
+const nomeMes=m=>MES[+m.slice(5,7)-1];
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* fatura: identificada pelo mês do vencimento */
+function venc(m){return m+'-'+pad(Math.min(S.cfg.venc,ultDia(m)))}
+function fech(m){if(S.cfg.fech[m])return S.cfg.fech[m];const d=new Date(venc(m)+'T12:00');d.setDate(d.getDate()-S.cfg.diasAntes);return iso(d)}
+function faturaDe(data){let m=addM(ym(data),-1);for(let i=0;i<4;i++,m=addM(m,1))if(data<fech(m))return m;return m}
+function parcelas(it){const n=Math.max(1,it.parcelas||1),c=Math.round(it.valor*100),b=Math.floor(c/n),r=c-b*n,f=faturaDe(it.data);return Array.from({length:n},(_,i)=>({it,k:i+1,n,fat:addM(f,i),v:(b+(i===0?r:0))/100}))}
+function daFatura(m){return S.itens.filter(i=>!i.del).flatMap(parcelas).filter(p=>p.fat===m).sort((a,b)=>b.it.data.localeCompare(a.it.data)||b.it.criado.localeCompare(a.it.criado))}
+const pendentes=()=>S.itens.filter(i=>!i.enviado);
+
+/* tela principal */
+function render(){
+  const atual=faturaDe(hoje());if(!ver)ver=atual;
+  const ps=daFatura(ver),tot=ps.reduce((s,p)=>s+p.v,0),lim=+S.cfg.limite||0,pct=lim?tot/lim*100:0;
+  const cor=pct>100?'var(--bad)':pct>=80?'var(--warn)':'var(--ok)';
+  const rest=lim-tot,fechou=hoje()>=fech(ver),pend=pendentes();
+  const velho=pend.length&&pend.some(i=>(Date.now()-new Date(i.alterado||i.criado))>3*864e5);
+  const rot=ver===atual?'Fatura atual':ver<atual?'Fatura fechada':'Próxima fatura';
+  $('app').innerHTML=`
+  <header><h1>Compras<small>${esc(S.cfg.nome)} · ${esc(S.cfg.cartao)}</small></h1><button class="ico" onclick="abrirAjustes()" aria-label="Ajustes">⚙︎</button></header>
+  <section class="hero">
+    <div class="nav"><button onclick="mudar(-1)" aria-label="Anterior">‹</button><div class="t">Fatura de ${nomeMes(ver)}<small>${rot}</small></div><button onclick="mudar(1)" aria-label="Próxima">›</button></div>
+    <div class="tot">${brl(tot)}</div>
+    <div class="de">de ${brl(lim)} de limite</div>
+    <div class="bar"><i style="width:${Math.min(100,pct).toFixed(1)}%;background:${cor}"></i></div>
+    <div class="disp"><span style="color:${cor};font-weight:600">${rest>=0?'Disponível '+brl(rest):'Passou '+brl(-rest)}</span><span>${pct.toFixed(0)}%</span></div>
+    <div class="datas"><span>${fechou?'Fechou':'Fecha'} ${dm(fech(ver))} · vence ${dm(venc(ver))}</span><button class="lnk" onclick="abrirFech('${ver}')">alterar fechamento</button></div>
+  </section>
+  ${pend.length?`<div class="aviso ${velho?'forte':''}"><span>${pend.length===1?'1 compra ainda não foi enviada':pend.length+' compras ainda não foram enviadas'} ao ${esc(S.cfg.para)}${velho?' — há mais de 3 dias':''}.</span><button class="btn sm" onclick="enviar()">Enviar</button></div>`:''}
+  <h2><span>Lançamentos</span><span>${ps.length||''}</span></h2>
+  <div class="lista">${ps.length?ps.map(p=>`<div class="it" onclick="abrirCompra('${p.it.id}')"><div class="d"><b>${p.it.data.slice(8)}</b>${MES[+p.it.data.slice(5,7)-1].slice(0,3)}</div><div class="n"><div>${esc(p.it.desc||'Compra')}${p.it.enviado?'':'<span class="pend" title="não enviada"></span>'}</div>${p.n>1||p.it.obs?`<small>${p.n>1?`parcela ${p.k}/${p.n} · total ${brl(p.it.valor)}`:''}${p.n>1&&p.it.obs?' · ':''}${esc(p.it.obs||'')}</small>`:''}</div><div class="v">${brl(p.v)}</div></div>`).join(''):`<div class="vazio">Nenhuma compra nesta fatura.</div>`}</div>
+  <button class="btn sec full enviar" onclick="enviar()">Enviar para o ${esc(S.cfg.para)}</button>
+  <p class="dica" style="text-align:center;margin-top:10px">${S.ultEnvio?'Último envio: '+new Date(S.ultEnvio).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'Nada enviado ainda'}</p>`;
+}
+function mudar(k){ver=addM(ver,k);render()}
+
+/* folha genérica */
+function folha(html){fechar();const v=document.createElement('div');v.className='vel';v.id='vel';v.innerHTML=`<div class="folha"><div class="alca"></div>${html}</div>`;v.addEventListener('click',e=>{if(e.target===v)fechar()});document.body.appendChild(v)}
+function fechar(){const v=$('vel');if(v)v.remove()}
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+
+/* nova compra / editar */
+let cent=0,nParc=1;
+function abrirCompra(id){
+  const it=id?S.itens.find(i=>i.id===id):null;cent=it?Math.round(it.valor*100):0;nParc=it?it.parcelas||1:1;
+  folha(`<h3>${it?'Editar compra':'Nova compra'}<button class="lnk" onclick="fechar()">Cancelar</button></h3>
+  <div class="campo valor"><label>Valor total</label><input id="fv" inputmode="numeric" autocomplete="off" value="${brl(cent/100)}"></div>
+  <div class="campo"><label>Descrição</label><input id="fd" maxlength="80" placeholder="Ex.: farmácia, mercado…" value="${esc(it?it.desc:'')}" autocomplete="off"></div>
+  <div class="linha"><div class="campo"><label>Data</label><input id="fdt" type="date" value="${it?it.data:hoje()}" onchange="dicaFat()"></div></div>
+  <div class="campo parc"><div><label>Parcelas</label><div id="pv" style="font-size:14px;color:var(--mut)"></div></div><div class="step"><button onclick="parc(-1)" aria-label="Menos">−</button><span id="pn"></span><button onclick="parc(1)" aria-label="Mais">+</button></div></div>
+  <div class="campo"><label>Observação (opcional)</label><input id="fo" maxlength="120" value="${esc(it?it.obs||'':'')}" autocomplete="off"></div>
+  <p class="dica" id="fdica"></p>
+  <div class="acoes"><button class="btn full" onclick="salvarCompra(${it?`'${it.id}'`:''})">Salvar</button></div>
+  ${it?`<button class="del" onclick="excluir('${it.id}')">Excluir compra</button>`:''}`);
+  const fv=$('fv');
+  fv.addEventListener('input',()=>{const d=fv.value.replace(/\D/g,'');cent=+d.slice(-11)||0;upV()});
+  upV();if(!it)setTimeout(()=>fv.focus(),250);
+}
+function upV(){const fv=$('fv');if(!fv)return;fv.value=brl(cent/100);parc(0)}
+function parc(k){nParc=Math.min(24,Math.max(1,nParc+k));$('pn').textContent=nParc+'×';$('pv').textContent=nParc>1?nParc+' de '+brl(cent/100/nParc):'à vista';dicaFat()}
+function dicaFat(){const d=$('fdt').value;if(!d)return;const f=faturaDe(d);$('fdica').textContent=nParc>1?`1ª parcela na fatura de ${nomeMes(f)} (vence ${dm(venc(f))}), última em ${nomeMes(addM(f,nParc-1))}.`:`Entra na fatura de ${nomeMes(f)} (vence ${dm(venc(f))}).`}
+function salvarCompra(id){
+  if(!cent){toast('Informe o valor');return}
+  const d=$('fdt').value||hoje(),agora=new Date().toISOString();
+  const dados={valor:cent/100,desc:$('fd').value.trim(),data:d,parcelas:nParc,obs:$('fo').value.trim()};
+  if(id){const it=S.itens.find(i=>i.id===id);Object.assign(it,dados,{alterado:agora,enviado:null})}
+  else S.itens.push({id:uid(),...dados,criado:agora,alterado:agora,enviado:null});
+  salvar();fechar();ver=faturaDe(d);render();toast('Compra salva');
+}
+function excluir(id){
+  if(!confirm('Excluir esta compra?'))return;
+  const i=S.itens.findIndex(x=>x.id===id),it=S.itens[i];
+  if(it.enviadoAlgumaVez){it.del=true;it.alterado=new Date().toISOString();it.enviado=null}else S.itens.splice(i,1);
+  salvar();fechar();render();
+}
+
+/* fechamento variável */
+function abrirFech(m){
+  folha(`<h3>Fechamento de ${nomeMes(m)}<button class="lnk" onclick="fechar()">Cancelar</button></h3>
+  <div class="campo"><label>Data de fechamento desta fatura</label><input id="ff" type="date" value="${fech(m)}"></div>
+  <p class="dica">O normal é ${S.cfg.diasAntes} dias antes do vencimento. Se o cartão fechar em outro dia neste mês, troque aqui. Compras a partir do dia do fechamento vão para a fatura seguinte.</p>
+  <div class="acoes">${S.cfg.fech[m]?`<button class="btn sec" onclick="salvarFech('${m}',true)">Usar o normal</button>`:''}<button class="btn" onclick="salvarFech('${m}')">Salvar</button></div>`)
+}
+function salvarFech(m,limpar){const v=$('ff').value;if(limpar||!v)delete S.cfg.fech[m];else S.cfg.fech[m]=v;salvar();fechar();render()}
+
+/* ajustes */
+function abrirAjustes(){
+  const c=S.cfg;
+  folha(`<h3>Ajustes<button class="lnk" onclick="fechar()">Fechar</button></h3>
+  <div class="sec-t">Limite</div>
+  <div class="grupo"><div class="campo"><label>Limite por fatura (R$)</label><input id="aLim" inputmode="decimal" value="${String(c.limite).replace('.',',')}"></div></div>
+  <div class="sec-t">Cartão</div>
+  <div class="grupo">
+    <div class="campo"><label>Nome do cartão</label><input id="aCar" value="${esc(c.cartao)}"></div>
+    <div class="campo"><label>Dia do vencimento</label><input id="aVen" inputmode="numeric" value="${c.venc}"></div>
+    <div class="campo"><label>Fechamento: quantos dias antes do vencimento</label><input id="aDia" inputmode="numeric" value="${c.diasAntes}"></div>
+  </div>
+  <div class="sec-t">Nomes</div>
+  <div class="grupo">
+    <div class="campo"><label>Seu nome</label><input id="aNom" value="${esc(c.nome)}"></div>
+    <div class="campo"><label>Enviar para</label><input id="aPar" value="${esc(c.para)}"></div>
+  </div>
+  <button class="btn full" onclick="salvarAjustes()">Salvar ajustes</button>
+  <div class="sec-t">Cópia de segurança</div>
+  <p class="dica">Para trocar de celular ou se precisar reinstalar o app. Guarde o arquivo no iCloud Drive ou mande para você mesma.</p>
+  <div class="acoes"><button class="btn sec" onclick="copiaTudo()">Salvar cópia</button><button class="btn sec" onclick="$('arqRest').click()">Restaurar cópia</button></div>
+  <button class="btn sec full" style="margin-top:10px" onclick="enviar(true)">Reenviar tudo para o ${esc(c.para)}</button>
+  <p class="dica" style="text-align:center;margin-top:16px">Os dados ficam só neste celular. Versão ${VERSAO}</p>`)
+}
+function salvarAjustes(){
+  const n=v=>parseFloat(String(v).replace(/\./g,'').replace(',','.'));
+  const lim=n($('aLim').value),ven=parseInt($('aVen').value),dia=parseInt($('aDia').value);
+  if(!(lim>0)){toast('Limite inválido');return}
+  if(!(ven>=1&&ven<=31)){toast('Dia do vencimento inválido');return}
+  if(!(dia>=1&&dia<=27)){toast('Dias antes do vencimento inválido');return}
+  Object.assign(S.cfg,{limite:lim,venc:ven,diasAntes:dia,cartao:$('aCar').value.trim()||'Cartão',nome:$('aNom').value.trim()||'Erika',para:$('aPar').value.trim()||'Ebert'});
+  salvar();fechar();ver=null;render();toast('Ajustes salvos');
+}
+
+/* envio para o Ebert */
+async function compartilhar(nome,obj,texto){
+  const blob=new Blob([JSON.stringify(obj,null,1)],{type:'application/json'});
+  const file=new File([blob],nome,{type:'application/json'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title:nome,text:texto});return true}
+    catch(e){if(e.name==='AbortError')return false;}
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=nome;document.body.appendChild(a);a.click();a.remove();
+  return confirm('O arquivo foi salvo. Conseguiu enviar para o '+S.cfg.para+'?');
+}
+async function enviar(tudo){
+  const lista=tudo?S.itens:pendentes();
+  if(!lista.length){if(confirm('Não há compras novas para enviar. Quer reenviar tudo?'))return enviar(true);return}
+  const agora=new Date().toISOString(),c=S.cfg;
+  const obj={app:'compras-cartao',v:1,pessoa:c.nome,cartao:c.cartao,venc:c.venc,gerado:agora,completo:!!tudo,
+    itens:lista.map(i=>({id:i.id,data:i.data,desc:i.desc,valor:i.valor,parcelas:i.parcelas||1,obs:i.obs||'',fatura:faturaDe(i.data),criado:i.criado,alterado:i.alterado,...(i.del?{excluido:true}:{})}))};
+  const nome=`compras_${c.nome.toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g,'')}_${hoje()}_${agora.slice(11,16).replace(':','h')}.json`;
+  const ok=await compartilhar(nome,obj,`${lista.length} compra(s) — ${c.nome}`);
+  if(!ok)return;
+  lista.forEach(i=>{i.enviado=agora;i.enviadoAlgumaVez=true});
+  S.itens=S.itens.filter(i=>!(i.del&&i.enviado));
+  S.ultEnvio=agora;salvar();render();toast('Enviado ✓');
+}
+
+/* cópia de segurança */
+async function copiaTudo(){await compartilhar(`copia_compras_${hoje()}.json`,{app:'compras-cartao-copia',v:1,dados:S},'Cópia de segurança do app Compras');toast('Cópia pronta')}
+function restaurar(inp){
+  const f=inp.files[0];inp.value='';if(!f)return;
+  const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(o.app!=='compras-cartao-copia'||!o.dados||!o.dados.cfg)throw 0;
+    if(!confirm('Substituir tudo o que está no app por esta cópia?'))return;
+    S={...PADRAO,...o.dados,cfg:{...PADRAO.cfg,...o.dados.cfg}};salvar();fechar();ver=null;render();toast('Cópia restaurada')}catch(e){alert('Este arquivo não é uma cópia do app Compras.')}};r.readAsText(f);
+}
+
+render();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
